@@ -1,176 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Heart Disease Predictor - User Friendly</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <title>Heart Disease Prediction</title>
     <style>
         body {
-            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        .header, .footer {
-            background-color: #0d6efd;
-            color: white;
-            padding: 15px 0;
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            width: 400px;
+        }
+
+        h1 {
             text-align: center;
+            color: #333;
             margin-bottom: 20px;
-            border-radius: 5px;
         }
-        .section {
-            background-color: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px #ccc;
-        }
-        img {
-            max-width: 100%;
-            border-radius: 10px;
-        }
-        .small-desc {
-            font-size: 0.85rem;
+
+        form label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
             color: #555;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 8px 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #6c63ff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #5a52d4;
+        }
+
+        .prediction {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            font-weight: bold;
+            border-radius: 8px;
+            background-color: #f0f4f8;
+            color: #333;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <h1>Heart Disease Prediction</h1>
+        <form method="POST">
+            <label>Age:</label>
+            <input type="number" name="age" step="1" required>
 
-        <div class="header">
-            <h1>Heart Disease Predictor</h1>
-        </div>
+            <label>Sex (0=female, 1=male):</label>
+            <input type="number" name="sex" step="1" required>
 
-        <div class="section">
-            <h2>What is Heart Disease?</h2>
-            <p>
-                Heart disease refers to a range of conditions that affect the heart, including coronary artery disease, arrhythmias, and heart valve problems. It's a leading cause of death worldwide.
-            </p>
-            <img src="{{ url_for('static', filename='images/heart.jpg') }}" alt="Heart Image" />
-            <p>
-                Maintaining a healthy lifestyle, regular exercise, and medical checkups help prevent heart disease.
-            </p>
-        </div>
+            <label>Chest Pain type (0-3):</label>
+            <input type="number" name="cp" step="1" required>
 
-        <div class="section">
-            <h2>About This Website</h2>
-            <p>
-                This website uses a machine learning model built with Python and Flask to predict the likelihood of heart disease based on your input data.
-            </p>
-            <p>
-                The model was trained using the Random Forest algorithm on a dataset of heart health indicators.
-            </p>
-            <p>Created with ❤️ to help raise awareness and provide quick risk assessments.</p>
-        </div>
+            <label>Resting BP:</label>
+            <input type="number" name="trestbps" step="1" required>
 
-        <div class="section">
-            <h2>Heart Disease Prediction</h2>
-            <form method="POST" action="/predict" class="row g-3">
+            <label>Cholesterol:</label>
+            <input type="number" name="chol" step="1" required>
 
-                <div class="col-md-4">
-                    <label for="age" class="form-label">Age</label>
-                    <input type="number" class="form-control" id="age" name="age" min="1" max="120" required />
-                </div>
+            <label>Fasting blood sugar > 120 (0=no,1=yes):</label>
+            <input type="number" name="fbs" step="1" required>
 
-                <div class="col-md-4">
-                    <label for="sex" class="form-label">Sex</label>
-                    <select id="sex" name="sex" class="form-select" required>
-                        <option value="">Select...</option>
-                        <option value="0">Female</option>
-                        <option value="1">Male</option>
-                    </select>
-                </div>
+            <label>Resting ECG (0-2):</label>
+            <input type="number" name="restecg" step="1" required>
 
-                <div class="col-md-4">
-                    <label for="cp" class="form-label">Chest Pain Type</label>
-                    <select id="cp" name="cp" class="form-select" required>
-                        <option value="">Select...</option>
-                        <option value="0">Typical Angina</option>
-                        <option value="1">Atypical Angina</option>
-                        <option value="2">Non-anginal Pain</option>
-                        <option value="3">Asymptomatic</option>
-                    </select>
-                </div>
+            <label>Max heart rate:</label>
+            <input type="number" name="thalach" step="1" required>
 
-                <div class="col-md-4">
-                    <label for="trestbps" class="form-label">Resting Blood Pressure (mm Hg)</label>
-                    <input type="number" class="form-control" id="trestbps" name="trestbps" min="50" max="250" required />
-                </div>
+            <label>Exercise induced angina (0=no,1=yes):</label>
+            <input type="number" name="exang" step="1" required>
 
-                <div class="col-md-4">
-                    <label for="chol" class="form-label">Cholesterol (mg/dl)</label>
-                    <input type="number" class="form-control" id="chol" name="chol" min="100" max="600" required />
-                </div>
+            <label>ST depression:</label>
+            <input type="number" name="oldpeak" step="0.1" required>
 
-                <div class="col-md-4">
-                    <label for="fbs" class="form-label">Fasting Blood Sugar &gt; 120 mg/dl</label>
-                    <select id="fbs" name="fbs" class="form-select" required>
-                        <option value="">Select...</option>
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
+            <label>Slope (0-2):</label>
+            <input type="number" name="slope" step="1" required>
 
-                <div class="col-md-4">
-                    <label for="restecg" class="form-label">Resting ECG Results</label>
-                    <select id="restecg" name="restecg" class="form-select" required>
-                        <option value="">Select...</option>
-                        <option value="0">Normal</option>
-                        <option value="1">ST-T wave abnormality</option>
-                        <option value="2">Left ventricular hypertrophy</option>
-                    </select>
-                </div>
+            <label>Major vessels colored (0-4):</label>
+            <input type="number" name="ca" step="1" required>
 
-                <div class="col-md-4">
-                    <label for="thalach" class="form-label">Max Heart Rate Achieved</label>
-                    <input type="number" class="form-control" id="thalach" name="thalach" min="60" max="220" required />
-                </div>
+            <label>Thal (0=normal,1=fixed,2=reversable):</label>
+            <input type="number" name="thal" step="1" required>
 
-                <div class="col-md-4">
-                    <label for="exang" class="form-label">Exercise Induced Angina</label>
-                    <select id="exang" name="exang" class="form-select" required>
-                        <option value="">Select...</option>
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
+            <input type="submit" value="Predict">
+        </form>
 
-                <div class="col-md-4">
-                    <label for="oldpeak" class="form-label">Oldpeak (ST depression induced by exercise)</label>
-                    <input type="number" step="any" class="form-control" id="oldpeak" name="oldpeak" min="0" max="10" required />
-                </div>
-
-                <div class="col-md-4">
-                    <label for="slope" class="form-label">Slope of the Peak Exercise ST Segment</label>
-                    <select id="slope" name="slope" class="form-select" required>
-                        <option value="">Select...</option>
-                        <option value="0">Upsloping</option>
-                        <option value="1">Flat</option>
-                        <option value="2">Downsloping</option>
-                    </select>
-                </div>
-
-                <div class="col-12 text-center mt-3">
-                    <button type="submit" class="btn btn-primary btn-lg">Predict</button>
-                </div>
-            </form>
-
-            {% if prediction_text %}
-            <div class="alert alert-info mt-4 text-center fs-5">
-                {% if "Has Heart Disease" in prediction_text %}
-                    ⚠️ {{ prediction_text }}
-                {% else %}
-                    🟢 {{ prediction_text }}
-                {% endif %}
+        {% if prediction %}
+            <div class="prediction">
+                Prediction: {{ prediction }}
             </div>
-            {% endif %}
-        </div>
-
-        <div class="footer">
-            &copy; 2025 Heart Disease Predictor
-        </div>
+        {% endif %}
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
