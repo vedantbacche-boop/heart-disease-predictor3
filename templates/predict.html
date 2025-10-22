@@ -1,108 +1,94 @@
-{% extends "base.html" %}
-{% block content %}
-<h1>💓 Heart Disease Prediction</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Heart Disease Prediction</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 20px; }
+        h1 { text-align: center; color: #b22222; }
+        form { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+        .row { display: flex; flex-wrap: wrap; margin-bottom: 15px; }
+        .column { flex: 50%; padding: 10px; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
+        button { background-color: #b22222; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #8b0000; }
+        .result { text-align: center; margin-top: 20px; font-size: 1.2em; font-weight: bold; color: #333; }
+    </style>
+</head>
+<body>
+    <h1>Heart Disease Prediction</h1>
+    <form action="/predict" method="POST">
+        <div class="row">
+            <div class="column">
+                <label>Age:</label>
+                <input type="number" step="any" name="age" required>
 
-{% if not model %}
-<p style="color:red;">Model not found. Prediction unavailable.</p>
-{% else %}
-<form method="POST">
+                <label>Sex:</label>
+                <select name="sex" required>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
 
-    <!-- Age -->
-    <div>
-        <label>Age:</label>
-        <input type="number" name="age" step="1" min="1" required>
-    </div>
+                <label>Chest Pain Type:</label>
+                <select name="cp" required>
+                    <option value="0">Typical Angina</option>
+                    <option value="1">Atypical Angina</option>
+                    <option value="2">Non-anginal Pain</option>
+                    <option value="3">Asymptomatic</option>
+                </select>
 
-    <!-- Sex -->
-    <div>
-        <label>Sex:</label>
-        <select name="sex" required>
-            <option value="0">Female</option>
-            <option value="1">Male</option>
-        </select>
-    </div>
+                <label>Resting Blood Pressure (mm Hg):</label>
+                <input type="number" step="any" name="trestbps" required>
 
-    <!-- Chest Pain type (cp) -->
-    <div>
-        <label>Chest Pain type:</label>
-        <select name="cp" required>
-            <option value="0">Typical Angina</option>
-            <option value="1">Atypical Angina</option>
-            <option value="2">Non-anginal Pain</option>
-            <option value="3">Asymptomatic</option>
-        </select>
-    </div>
+                <label>Serum Cholesterol (mg/dl):</label>
+                <input type="number" step="any" name="chol" required>
 
-    <!-- Resting BP -->
-    <div>
-        <label>Resting BP (mm Hg):</label>
-        <input type="number" name="trestbps" step="1" required>
-    </div>
+                <label>Fasting Blood Sugar > 120 mg/dl:</label>
+                <select name="fbs" required>
+                    <option value="1">True</option>
+                    <option value="0">False</option>
+                </select>
 
-    <!-- Cholesterol -->
-    <div>
-        <label>Cholesterol (mg/dl):</label>
-        <input type="number" name="chol" step="1" required>
-    </div>
+                <label>Resting ECG Results:</label>
+                <select name="restecg" required>
+                    <option value="0">Normal</option>
+                    <option value="1">ST-T Abnormality</option>
+                    <option value="2">Left Ventricular Hypertrophy</option>
+                </select>
+            </div>
+            <div class="column">
+                <label>Max Heart Rate Achieved:</label>
+                <input type="number" step="any" name="thalach" required>
 
-    <!-- Fasting blood sugar -->
-    <div>
-        <label>Fasting blood sugar > 120 mg/dl:</label>
-        <select name="fbs" required>
-            <option value="0">False</option>
-            <option value="1">True</option>
-        </select>
-    </div>
+                <label>Exercise Induced Angina:</label>
+                <select name="exang" required>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
 
-    <!-- Resting ECG -->
-    <div>
-        <label>Resting ECG:</label>
-        <select name="restecg" required>
-            <option value="0">Normal</option>
-            <option value="1">ST-T wave abnormality</option>
-            <option value="2">Left ventricular hypertrophy</option>
-        </select>
-    </div>
+                <label>ST Depression (oldpeak):</label>
+                <input type="number" step="any" name="oldpeak" required>
 
-    <!-- Max heart rate achieved -->
-    <div>
-        <label>Max heart rate achieved:</label>
-        <input type="number" name="thalach" step="1" required>
-    </div>
+                <label>ST Slope:</label>
+                <select name="slope" required>
+                    <option value="0">Upsloping</option>
+                    <option value="1">Flat</option>
+                    <option value="2">Downsloping</option>
+                </select>
 
-    <!-- Exercise induced angina -->
-    <div>
-        <label>Exercise induced angina:</label>
-        <select name="exang" required>
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </select>
-    </div>
+                <label>Feature X:</label>
+                <input type="number" step="any" name="featureX" required>
 
-    <!-- ST depression -->
-    <div>
-        <label>ST depression:</label>
-        <input type="number" name="oldpeak" step="0.1" required>
-    </div>
+                <label>Feature Y:</label>
+                <input type="number" step="any" name="featureY" required>
+            </div>
+        </div>
+        <button type="submit">Predict</button>
+    </form>
 
-    <!-- Slope -->
-    <div>
-        <label>Slope of ST segment:</label>
-        <select name="slope" required>
-            <option value="0">Upsloping</option>
-            <option value="1">Flat</option>
-            <option value="2">Downsloping</option>
-        </select>
-    </div>
-
-    <input type="submit" value="Predict">
-</form>
-{% endif %}
-
-{% if prediction %}
-<div class="prediction" style="color: {% if prediction=='Heart disease detected' %}red{% else %}green{% endif %};">
-    {{ prediction }}
-</div>
-{% endif %}
-
-{% endblock %}
+    {% if prediction_text %}
+        <div class="result">{{ prediction_text }}</div>
+    {% endif %}
+</body>
+</html>
