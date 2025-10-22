@@ -1,46 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Heart Disease Prediction</title>
+    <title>{{ title }}</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
             background: linear-gradient(to right, #74ebd5, #ACB6E5);
+        }
+
+        .navbar {
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+            background-color: #6c63ff;
+            padding: 12px 0;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
         }
 
         .container {
+            max-width: 900px;
+            margin: 30px auto;
             background-color: rgba(255, 255, 255, 0.95);
             padding: 30px 40px;
             border-radius: 12px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            width: 400px;
         }
 
-        h1 {
+        h1, h2 {
             text-align: center;
             color: #333;
-            margin-bottom: 20px;
         }
 
-        form label {
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+            flex: 0 0 48%; /* 2 inputs per row */
+            position: relative;
+        }
+
+        .form-group label {
             font-weight: bold;
-            display: block;
-            margin-top: 10px;
-            color: #555;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group label img {
+            width: 20px;
+            height: 20px;
+            margin-right: 6px;
         }
 
         input[type="number"] {
-            width: 100%;
-            padding: 8px 10px;
-            margin-top: 5px;
+            padding: 8px;
             border-radius: 6px;
             border: 1px solid #ccc;
-            box-sizing: border-box;
         }
 
         input[type="submit"] {
@@ -53,7 +86,7 @@
             color: white;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: 0.3s;
         }
 
         input[type="submit"]:hover {
@@ -69,59 +102,78 @@
             background-color: #f0f4f8;
             color: #333;
         }
+
+        img.hero {
+            display: block;
+            max-width: 100%;
+            margin: 0 auto 20px auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        img.awareness-img, img.about-img {
+            max-width: 100%;
+            display: block;
+            margin: 15px auto;
+            border-radius: 12px;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        /* Responsive for small screens */
+        @media (max-width: 600px) {
+            .form-group {
+                flex: 0 0 100%;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <a href="{{ url_for('home') }}">Predict</a>
+        <a href="{{ url_for('awareness') }}">Awareness</a>
+        <a href="{{ url_for('about') }}">About</a>
+    </div>
+
     <div class="container">
-        <h1>Heart Disease Prediction</h1>
-        <form method="POST">
-            <label>Age:</label>
-            <input type="number" name="age" step="1" required>
 
-            <label>Sex (0=female, 1=male):</label>
-            <input type="number" name="sex" step="1" required>
+        {% if page == 'predict' %}
+            <img class="hero" src="{{ url_for('static', filename='heart_banner.jpg') }}" alt="Heart Banner">
+            <h1>💓 Heart Disease Prediction</h1>
+            <form method="POST">
+                {% for field, label in fields.items() %}
+                <div class="form-group">
+                    <label>
+                        <img src="{{ url_for('static', filename='icon.png') }}" alt="icon">
+                        {{ label }}
+                    </label>
+                    <input type="number" name="{{ field }}" step="any" required>
+                </div>
+                {% endfor %}
+                <input type="submit" value="Predict">
+            </form>
 
-            <label>Chest Pain type (0-3):</label>
-            <input type="number" name="cp" step="1" required>
-
-            <label>Resting BP:</label>
-            <input type="number" name="trestbps" step="1" required>
-
-            <label>Cholesterol:</label>
-            <input type="number" name="chol" step="1" required>
-
-            <label>Fasting blood sugar > 120 (0=no,1=yes):</label>
-            <input type="number" name="fbs" step="1" required>
-
-            <label>Resting ECG (0-2):</label>
-            <input type="number" name="restecg" step="1" required>
-
-            <label>Max heart rate:</label>
-            <input type="number" name="thalach" step="1" required>
-
-            <label>Exercise induced angina (0=no,1=yes):</label>
-            <input type="number" name="exang" step="1" required>
-
-            <label>ST depression:</label>
-            <input type="number" name="oldpeak" step="0.1" required>
-
-            <label>Slope (0-2):</label>
-            <input type="number" name="slope" step="1" required>
-
-            <label>Major vessels colored (0-4):</label>
-            <input type="number" name="ca" step="1" required>
-
-            <label>Thal (0=normal,1=fixed,2=reversable):</label>
-            <input type="number" name="thal" step="1" required>
-
-            <input type="submit" value="Predict">
-        </form>
-
-        {% if prediction %}
-            <div class="prediction">
-                Prediction: {{ prediction }}
+            {% if prediction %}
+            <div class="prediction" style="color: {% if prediction=='Heart disease detected' %}red{% else %}green{% endif %};">
+                {{ prediction }}
             </div>
+            {% endif %}
+
+        {% elif page == 'awareness' %}
+            <h1>💡 Heart Disease Awareness</h1>
+            <img class="awareness-img" src="{{ url_for('static', filename='heart_awareness.jpg') }}" alt="Heart Awareness">
+            <p>Heart disease is one of the leading causes of death worldwide. Regular exercise, a healthy diet, and routine check-ups can significantly reduce the risk. Understanding symptoms like chest pain, shortness of breath, and fatigue can save lives.</p>
+            <p>Always consult your doctor if you have any concerns. Early detection is key!</p>
+
+        {% elif page == 'about' %}
+            <h1>❤️ About This Site</h1>
+            <img class="about-img" src="{{ url_for('static', filename='about_heart.png') }}" alt="About Heart">
+            <p>This website was created to help users check their risk of heart disease using a Random Forest model.</p>
+            <p>Built with Python, Flask, and a bit of ❤️. All predictions are for informational purposes only — always consult a medical professional for health decisions.</p>
         {% endif %}
+
     </div>
 </body>
 </html>
