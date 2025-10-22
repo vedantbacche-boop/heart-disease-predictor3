@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>About This Site</title>
-</head>
-<body>
-    <nav>
-        <a href="{{ url_for('home') }}">Predict</a> |
-        <a href="{{ url_for('awareness') }}">Awareness</a> |
-        <a href="{{ url_for('about') }}">About</a>
-    </nav>
-    <hr>
-    <h1>About This Site</h1>
-    <p>This site predicts heart disease risk using a Random Forest model built with Python and Flask. All predictions are informational only — consult a doctor for health advice.</p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<h1>❤️ About This Site</h1>
+<p>This website predicts heart disease risk using a Random Forest model built with Python and Flask.</p>
+<p>All predictions are informational only — always consult a medical professional for health decisions.</p>
+{% endblock %}

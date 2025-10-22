@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #6c63ff;
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        form div {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        input[type="number"], input[type="submit"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            background-color: #6c63ff;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #5a52d4;
+        }
+
+        .prediction {
+            margin-top: 15px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('home') }}">Predict</a>
+        <a href="{{ url_for('awareness') }}">Awareness</a>
+        <a href="{{ url_for('about') }}">About</a>
+    </nav>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
