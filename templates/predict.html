@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heart Disease Prediction</title>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('home') }}">Predict</a> |
+        <a href="{{ url_for('awareness') }}">Awareness</a> |
+        <a href="{{ url_for('about') }}">About</a>
+    </nav>
+    <hr>
+    <h1>Heart Disease Prediction</h1>
+
+    {% if not model %}
+        <p style="color:red;">Model not found. Prediction unavailable.</p>
+    {% else %}
+        <form method="POST">
+            {% for field, label in fields.items() %}
+                <label>{{ label }}:</label>
+                <input type="number" name="{{ field }}" step="any" required><br><br>
+            {% endfor %}
+            <input type="submit" value="Predict">
+        </form>
+    {% endif %}
+
+    {% if prediction %}
+        <h3>{{ prediction }}</h3>
+    {% endif %}
+</body>
+</html>
