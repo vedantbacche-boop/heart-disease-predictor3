@@ -1,47 +1,49 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, render_template
 import pickle
 import pandas as pd
 import os
 
-# Initialize Flask app
 app = Flask(__name__)
 
-# Load the trained model
-model_path = "model.pkl"
+# Load trained model
+model_path = "model_randomforest.pkl"   # <-- updated filename
 with open(model_path, "rb") as f:
     model = pickle.load(f)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    return "Heart Disease Prediction API is running successfully on Render! 🚀"
+    prediction = None
+    if request.method == 'POST':
+        try:
+            # Get form inputs
+            age = float(request.form['age'])
+            sex = float(request.form['sex'])
+            cp = float(request.form['cp'])
+            trestbps = float(request.form['trestbps'])
+            chol = float(request.form['chol'])
+            fbs = float(request.form['fbs'])
+            restecg = float(request.form['restecg'])
+            thalach = float(request.form['thalach'])
+            exang = float(request.form['exang'])
+            oldpeak = float(request.form['oldpeak'])
+            slope = float(request.form['slope'])
+            ca = float(request.form['ca'])
+            thal = float(request.form['thal'])
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    try:
-        # Expecting JSON input
-        data = request.get_json()
+            # Prepare DataFrame
+            input_df = pd.DataFrame([[
+                age, sex, cp, trestbps, chol, fbs, restecg,
+                thalach, exang, oldpeak, slope, ca, thal
+            ]], columns=['age','sex','cp','trestbps','chol','fbs','restecg',
+                         'thalach','exang','oldpeak','slope','ca','thal'])
 
-        # Extract features
-        features = [[
-            data['age'], data['sex'], data['cp'], data['trestbps'], data['chol'],
-            data['fbs'], data['restecg'], data['thalach'], data['exang'],
-            data['oldpeak'], data['slope'], data['ca'], data['thal']
-        ]]
+            pred = model.predict(input_df)[0]
+            prediction = "Heart disease detected" if pred == 1 else "No heart disease"
 
-        # Convert to DataFrame
-        columns = ['age','sex','cp','trestbps','chol','fbs','restecg',
-                   'thalach','exang','oldpeak','slope','ca','thal']
-        input_df = pd.DataFrame(features, columns=columns)
+        except Exception as e:
+            prediction = f"Error: {e}"
 
-        # Predict
-        prediction = model.predict(input_df)[0]
-
-        # Return response
-        result = "Heart disease detected" if prediction == 1 else "No heart disease"
-        return jsonify({'prediction': result})
-
-    except Exception as e:
-        return jsonify({'error': str(e)})
+    return render_template('index.html', prediction=prediction)
 
 # Run Flask app on Render
 if __name__ == "__main__":
