@@ -6,12 +6,95 @@
 <p style="color:red;">Model not found. Prediction unavailable.</p>
 {% else %}
 <form method="POST">
-    {% for field, label in fields.items() %}
-        <div>
-            <label>{{ label }}:</label>
-            <input type="number" name="{{ field }}" step="any" required>
-        </div>
-    {% endfor %}
+
+    <!-- Age -->
+    <div>
+        <label>Age:</label>
+        <input type="number" name="age" step="1" min="1" required>
+    </div>
+
+    <!-- Sex -->
+    <div>
+        <label>Sex:</label>
+        <select name="sex" required>
+            <option value="0">Female</option>
+            <option value="1">Male</option>
+        </select>
+    </div>
+
+    <!-- Chest Pain type (cp) -->
+    <div>
+        <label>Chest Pain type:</label>
+        <select name="cp" required>
+            <option value="0">Typical Angina</option>
+            <option value="1">Atypical Angina</option>
+            <option value="2">Non-anginal Pain</option>
+            <option value="3">Asymptomatic</option>
+        </select>
+    </div>
+
+    <!-- Resting BP -->
+    <div>
+        <label>Resting BP (mm Hg):</label>
+        <input type="number" name="trestbps" step="1" required>
+    </div>
+
+    <!-- Cholesterol -->
+    <div>
+        <label>Cholesterol (mg/dl):</label>
+        <input type="number" name="chol" step="1" required>
+    </div>
+
+    <!-- Fasting blood sugar -->
+    <div>
+        <label>Fasting blood sugar > 120 mg/dl:</label>
+        <select name="fbs" required>
+            <option value="0">False</option>
+            <option value="1">True</option>
+        </select>
+    </div>
+
+    <!-- Resting ECG -->
+    <div>
+        <label>Resting ECG:</label>
+        <select name="restecg" required>
+            <option value="0">Normal</option>
+            <option value="1">ST-T wave abnormality</option>
+            <option value="2">Left ventricular hypertrophy</option>
+        </select>
+    </div>
+
+    <!-- Max heart rate achieved -->
+    <div>
+        <label>Max heart rate achieved:</label>
+        <input type="number" name="thalach" step="1" required>
+    </div>
+
+    <!-- Exercise induced angina -->
+    <div>
+        <label>Exercise induced angina:</label>
+        <select name="exang" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select>
+    </div>
+
+    <!-- ST depression -->
+    <div>
+        <label>ST depression:</label>
+        <input type="number" name="oldpeak" step="0.1" required>
+    </div>
+
+    <!-- Slope -->
+    <div>
+        <label>Slope of ST segment:</label>
+        <select name="slope" required>
+            <option value="0">Upsloping</option>
+            <option value="1">Flat</option>
+            <option value="2">Downsloping</option>
+        </select>
+    </div>
+
     <input type="submit" value="Predict">
 </form>
 {% endif %}
@@ -21,4 +104,5 @@
     {{ prediction }}
 </div>
 {% endif %}
+
 {% endblock %}
