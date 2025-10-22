@@ -54,20 +54,11 @@
             flex-direction: column;
             margin-bottom: 15px;
             flex: 0 0 48%; /* 2 inputs per row */
-            position: relative;
         }
 
         .form-group label {
             font-weight: bold;
             margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-        }
-
-        .form-group label img {
-            width: 20px;
-            height: 20px;
-            margin-right: 6px;
         }
 
         input[type="number"] {
@@ -103,26 +94,10 @@
             color: #333;
         }
 
-        img.hero {
-            display: block;
-            max-width: 100%;
-            margin: 0 auto 20px auto;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-        }
-
-        img.awareness-img, img.about-img {
-            max-width: 100%;
-            display: block;
-            margin: 15px auto;
-            border-radius: 12px;
-        }
-
         p {
             line-height: 1.6;
         }
 
-        /* Responsive for small screens */
         @media (max-width: 600px) {
             .form-group {
                 flex: 0 0 100%;
@@ -140,15 +115,11 @@
     <div class="container">
 
         {% if page == 'predict' %}
-            <img class="hero" src="{{ url_for('static', filename='heart_banner.jpg') }}" alt="Heart Banner">
             <h1>💓 Heart Disease Prediction</h1>
             <form method="POST">
                 {% for field, label in fields.items() %}
                 <div class="form-group">
-                    <label>
-                        <img src="{{ url_for('static', filename='icon.png') }}" alt="icon">
-                        {{ label }}
-                    </label>
+                    <label>{{ label }}</label>
                     <input type="number" name="{{ field }}" step="any" required>
                 </div>
                 {% endfor %}
@@ -163,13 +134,11 @@
 
         {% elif page == 'awareness' %}
             <h1>💡 Heart Disease Awareness</h1>
-            <img class="awareness-img" src="{{ url_for('static', filename='heart_awareness.jpg') }}" alt="Heart Awareness">
             <p>Heart disease is one of the leading causes of death worldwide. Regular exercise, a healthy diet, and routine check-ups can significantly reduce the risk. Understanding symptoms like chest pain, shortness of breath, and fatigue can save lives.</p>
             <p>Always consult your doctor if you have any concerns. Early detection is key!</p>
 
         {% elif page == 'about' %}
             <h1>❤️ About This Site</h1>
-            <img class="about-img" src="{{ url_for('static', filename='about_heart.png') }}" alt="About Heart">
             <p>This website was created to help users check their risk of heart disease using a Random Forest model.</p>
             <p>Built with Python, Flask, and a bit of ❤️. All predictions are for informational purposes only — always consult a medical professional for health decisions.</p>
         {% endif %}
