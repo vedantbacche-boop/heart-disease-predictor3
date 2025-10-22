@@ -1,76 +1,60 @@
-from flask import Flask, request, render_template
-import pandas as pd
+from flask import Flask, render_template, request
 import pickle
-import os
+import pandas as pd
 
 app = Flask(__name__)
 
-# --------------------------
-# Load model
-# --------------------------
-model_path = "model_randomforest.pkl"
-if os.path.exists(model_path):
-    with open(model_path, "rb") as f:
-        model = pickle.load(f)
-else:
-    model = None  # fallback if model is missing
+# Load the retrained 13-feature model
+with open("model_randomforest.pkl", "rb") as f:
+    model = pickle.load(f)
 
-# --------------------------
-# Fields for prediction form (11 features)
-# --------------------------
-fields = {
-    'age': 'Age',
-    'sex': 'Sex (0=female,1=male)',
-    'cp': 'Chest Pain type (0-3)',
-    'trestbps': 'Resting BP',
-    'chol': 'Cholesterol',
-    'fbs': 'Fasting blood sugar > 120',
-    'restecg': 'Resting ECG (0-2)',
-    'thalach': 'Max heart rate achieved',
-    'exang': 'Exercise induced angina (0=no,1=yes)',
-    'oldpeak': 'ST depression',
-    'slope': 'Slope (0-2)'
-}
-
-# ------------
-@app.route("/", methods=["GET", "POST"])
+# Home page → Predict form
+@app.route('/')
 def home():
-    prediction = None
-    try:
-        if request.method == "POST" and model:
-            input_data = [float(request.form[field]) for field in fields]
-            df = pd.DataFrame([input_data], columns=fields.keys())
-            pred = model.predict(df)[0]
-            prediction = "Heart disease detected" if pred == 1 else "No heart disease"
+    return render_template('predict.html')
 
-        return render_template(
-            "predict.html",
-            fields=fields,
-            prediction=prediction,
-            model=model,
-            title="Heart Disease Prediction"
-        )
-
-    except Exception as e:
-        return f"<h3>Something went wrong:</h3><p>{e}</p>"
-
-@app.route("/awareness")
-def awareness():
-    return render_template(
-        "awareness.html",
-        title="Heart Disease Awareness"
-    )
-
-@app.route("/about")
+# About page
+@app.route('/about')
 def about():
-    return render_template(
-        "about.html",
-        title="About This Site"
-    )
+    return render_template('about.html')
 
-# --------------------------
-# Run the app
-# --------------------------
+# Awareness page
+@app.route('/awareness')
+def awareness():
+    return render_template('awareness.html')
+
+# Prediction logic
+@app.route('/predict', methods=['POST'])
+def predict():
+    try:
+        # Extract values from form
+        age = float(request.form['age'])
+        sex = int(request.form['sex'])
+        cp = int(request.form['cp'])
+        trestbps = float(request.form['trestbps'])
+        chol = float(request.form['chol'])
+        fbs = int(request.form['fbs'])
+        restecg = int(request.form['restecg'])
+        thalach = float(request.form['thalach'])
+        exang = int(request.form['exang'])
+        oldpeak = float(request.form['oldpeak'])
+        slope = int(request.form['slope'])
+        featureX = float(request.form['featureX'])   # replace with actual name
+        featureY = float(request.form['featureY'])   # replace with actual name
+
+        # Create DataFrame
+        user_data = pd.DataFrame([[age, sex, cp, trestbps, chol, fbs, restecg,
+                                   thalach, exang, oldpeak, slope, featureX, featureY]],
+                                 columns=['age','sex','cp','trestbps','chol','fbs','restecg',
+                                          'thalach','exang','oldpeak','slope','featureX','featureY'])
+
+        # Predict
+        prediction = model.predict(user_data)[0]
+        result = "Heart Disease Detected!" if prediction == 1 else "No Heart Disease Detected."
+
+        return render_template('predict.html', prediction_text=result)
+    except Exception as e:
+        return f"Error: {str(e)}"
+
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(debug=True)
