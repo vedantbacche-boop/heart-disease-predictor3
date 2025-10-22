@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 
 # --------------------------
-# Load model safely
+# Load model
 # --------------------------
 model_path = "model_randomforest.pkl"
 if os.path.exists(model_path):
@@ -16,7 +16,7 @@ else:
     model = None  # fallback if model is missing
 
 # --------------------------
-# Fields for prediction form
+# Fields for prediction form (11 features)
 # --------------------------
 fields = {
     'age': 'Age',
@@ -29,14 +29,10 @@ fields = {
     'thalach': 'Max heart rate achieved',
     'exang': 'Exercise induced angina (0=no,1=yes)',
     'oldpeak': 'ST depression',
-    'slope': 'Slope (0-2)',
-    'ca': 'Major vessels colored (0-4)',
-    'thal': 'Thal (0=normal,1=fixed,2=reversable)'
+    'slope': 'Slope (0-2)'
 }
 
-# --------------------------
-# Routes
-# --------------------------
+# ------------
 @app.route("/", methods=["GET", "POST"])
 def home():
     prediction = None
