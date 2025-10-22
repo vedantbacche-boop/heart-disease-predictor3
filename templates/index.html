@@ -1,107 +1,46 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
 <head>
     <title>{{ title }}</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
+            font-family: Arial, sans-serif;
+            margin: 20px;
             padding: 0;
-            background: linear-gradient(to right, #74ebd5, #ACB6E5);
         }
 
         .navbar {
-            display: flex;
-            justify-content: center;
-            background-color: #6c63ff;
-            padding: 12px 0;
+            margin-bottom: 20px;
         }
 
         .navbar a {
-            color: white;
+            margin-right: 15px;
             text-decoration: none;
-            margin: 0 20px;
             font-weight: bold;
-            transition: 0.2s;
-        }
-
-        .navbar a:hover {
-            text-decoration: underline;
         }
 
         .container {
-            max-width: 900px;
-            margin: 30px auto;
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        h1, h2 {
-            text-align: center;
-            color: #333;
+        form div {
+            margin-bottom: 10px;
         }
 
-        form {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+        label {
+            display: block;
+            margin-bottom: 3px;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 15px;
-            flex: 0 0 48%; /* 2 inputs per row */
-        }
-
-        .form-group label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        input[type="number"] {
-            padding: 8px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        input[type="submit"] {
+        input[type="number"], input[type="submit"] {
             width: 100%;
-            padding: 12px;
-            margin-top: 20px;
-            border: none;
-            border-radius: 8px;
-            background-color: #6c63ff;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #5a52d4;
+            padding: 6px;
         }
 
         .prediction {
-            text-align: center;
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: 15px;
             font-weight: bold;
-            border-radius: 8px;
-            background-color: #f0f4f8;
-            color: #333;
-        }
-
-        p {
-            line-height: 1.6;
-        }
-
-        @media (max-width: 600px) {
-            .form-group {
-                flex: 0 0 100%;
-            }
         }
     </style>
 </head>
@@ -113,36 +52,32 @@
     </div>
 
     <div class="container">
-
         {% if page == 'predict' %}
-            <h1>💓 Heart Disease Prediction</h1>
+            <h1>Heart Disease Prediction</h1>
             <form method="POST">
                 {% for field, label in fields.items() %}
-                <div class="form-group">
-                    <label>{{ label }}</label>
-                    <input type="number" name="{{ field }}" step="any" required>
-                </div>
+                    <div>
+                        <label>{{ label }}</label>
+                        <input type="number" name="{{ field }}" step="any" required>
+                    </div>
                 {% endfor %}
                 <input type="submit" value="Predict">
             </form>
 
             {% if prediction %}
-            <div class="prediction" style="color: {% if prediction=='Heart disease detected' %}red{% else %}green{% endif %};">
-                {{ prediction }}
-            </div>
+                <div class="prediction">
+                    {{ prediction }}
+                </div>
             {% endif %}
 
         {% elif page == 'awareness' %}
-            <h1>💡 Heart Disease Awareness</h1>
-            <p>Heart disease is one of the leading causes of death worldwide. Regular exercise, a healthy diet, and routine check-ups can significantly reduce the risk. Understanding symptoms like chest pain, shortness of breath, and fatigue can save lives.</p>
-            <p>Always consult your doctor if you have any concerns. Early detection is key!</p>
+            <h1>Heart Disease Awareness</h1>
+            <p>Heart disease is a leading cause of death worldwide. Regular check-ups, healthy diet, and exercise help prevent risks. Early detection is key.</p>
 
         {% elif page == 'about' %}
-            <h1>❤️ About This Site</h1>
-            <p>This website was created to help users check their risk of heart disease using a Random Forest model.</p>
-            <p>Built with Python, Flask, and a bit of ❤️. All predictions are for informational purposes only — always consult a medical professional for health decisions.</p>
+            <h1>About This Site</h1>
+            <p>This site predicts heart disease risk using a Random Forest model built with Python and Flask. All predictions are informational only — consult a doctor for health advice.</p>
         {% endif %}
-
     </div>
 </body>
 </html>
