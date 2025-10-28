@@ -1,110 +1,135 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heart Disease Prediction</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #f8f9fa, #e9ecef);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .container {
+      width: 90%;
+      max-width: 700px;
+      background-color: #ffffff;
+      margin: 50px auto;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #dc3545;
+      margin-bottom: 20px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+    }
+    label {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #333;
+    }
+    input, select {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 100%;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #dc3545;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #b02a37;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Heart Disease Prediction</h1>
+    <form method="POST" action="/predict">
+      <label>Age:</label>
+      <input type="number" name="age" required />
 
-{% block title %}Heart Disease Prediction{% endblock %}
+      <label>Sex:</label>
+      <select name="sex" required>
+        <option value="1">Male</option>
+        <option value="0">Female</option>
+      </select>
 
-{% block content %}
-<div style="display:flex; justify-content:center;">
-    <div style="max-width:800px; width:100%;">
-        <h1 style="text-align:center; color:#b22222;">Heart Disease Prediction</h1>
-        <form action="/predict" method="POST">
-            <div style="display:flex; flex-wrap:wrap; gap:20px;">
-                <!-- Left Column -->
-                <div style="flex:50%;">
-                    <label>Age:</label>
-                    <input type="number" step="any" name="age" required style="width:100%; padding:5px; margin-bottom:10px;">
+      <label>Chest Pain Type:</label>
+      <select name="cp" required>
+        <option value="0">Typical Angina</option>
+        <option value="1">Atypical Angina</option>
+        <option value="2">Non-anginal Pain</option>
+        <option value="3">Asymptomatic</option>
+      </select>
 
-                    <label>Sex:</label>
-                    <select name="sex" required style="width:100%; padding:5px; margin-bottom:10px;">
-                        <option value="1">Male</option>
-                        <option value="0">Female</option>
-                    </select>
+      <label>Resting Blood Pressure:</label>
+      <input type="number" name="trestbps" required />
 
-                    <label>Chest Pain Type:</label>
-                    <select name="cp" required style="width:100%; padding:5px; margin-bottom:10px;">
-                        <option value="0">Typical Angina</option>
-                        <option value="1">Atypical Angina</option>
-                        <option value="2">Non-anginal Pain</option>
-                        <option value="3">Asymptomatic</option>
-                    </select>
+      <label>Cholesterol:</label>
+      <input type="number" name="chol" required />
 
-                    <label>Resting BP:</label>
-                    <input type="number" step="any" name="trestbps" required style="width:100%; padding:5px; margin-bottom:10px;">
+      <label>Fasting Blood Sugar > 120 mg/dl:</label>
+      <select name="fbs" required>
+        <option value="1">True</option>
+        <option value="0">False</option>
+      </select>
 
-                    <label>Cholesterol:</label>
-                    <input type="number" step="any" name="chol" required style="width:100%; padding:5px; margin-bottom:10px;">
+      <label>Resting ECG Results:</label>
+      <select name="restecg" required>
+        <option value="0">Normal</option>
+        <option value="1">ST-T Wave Abnormality</option>
+        <option value="2">Left Ventricular Hypertrophy</option>
+      </select>
 
-                    <label>Fasting Blood Sugar:</label>
-                    <select name="fbs" required style="width:100%; padding:5px; margin-bottom:10px;">
-                        <option value="1">True</option>
-                        <option value="0">False</option>
-                    </select>
+      <label>Maximum Heart Rate Achieved:</label>
+      <input type="number" name="thalach" required />
 
-                    <label>Resting ECG:</label>
-                    <select name="restecg" required style="width:100%; padding:5px; margin-bottom:10px;">
-                        <option value="0">Normal</option>
-                        <option value="1">ST-T Abnormality</option>
-                        <option value="2">Left Ventricular Hypertrophy</option>
-                    </select>
-                </div>
+      <label>Exercise Induced Angina:</label>
+      <select name="exang" required>
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+      </select>
 
-                <!-- Right Column -->
-                <div style="flex:50%;">
-                    <label>Max Heart Rate:</label>
-                    <input type="number" step="any" name="thalach" required style="width:100%; padding:5px; margin-bottom:10px;">
+      <label>ST Depression (Oldpeak):</label>
+      <input type="number" step="0.1" name="oldpeak" required />
 
-                    <label>Exercise Angina:</label>
-                    <select name="exang" required style="width:100%; padding:5px; margin-bottom:10px;">
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
-                    </select>
+      <label>Major Vessels Colored (0–3):</label>
+      <input type="number" name="ca" required min="0" max="3" />
 
-                    <label>ST Depression (oldpeak):</label>
-                    <input type="number" step="any" name="oldpeak" required style="width:100%; padding:5px; margin-bottom:10px;">
+      <label>Thalassemia:</label>
+      <select name="thal" required>
+        <option value="1">Normal</option>
+        <option value="2">Fixed Defect</option>
+        <option value="3">Reversible Defect</option>
+      </select>
 
-                    <label>ST Slope:</label>
-                    <select name="slope" required style="width:100%; padding:5px; margin-bottom:10px;">
-                        <option value="0">Upsloping</option>
-                        <option value="1">Flat</option>
-                        <option value="2">Downsloping</option>
-                    </select>
-
-                    <label>Number of Major Vessels (ca):</label>
-                    <select name="ca" required style="width:100%; padding:5px; margin-bottom:10px;">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
-
-                    <label>Thalassemia (thal):</label>
-                    <select name="thal" required style="width:100%; padding:5px; margin-bottom:10px;">
-                        <option value="0">Normal</option>
-                        <option value="1">Fixed Defect</option>
-                        <option value="2">Reversible Defect</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Button at bottom, centered -->
-            <div style="text-align:center; margin-top:20px;">
-                <button type="submit" style="
-                    padding: 10px 25px;
-                    font-size: 16px;
-                    background-color: #b22222;
-                    color: white;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                ">Predict</button>
-            </div>
-        </form>
-
-        {% if prediction_text %}
-        <div style="text-align:center; margin-top:20px; font-weight:bold; color:#b22222;">
-            {{ prediction_text }}
-        </div>
-        {% endif %}
-    </div>
-</div>
-{% endblock %}
+      <button type="submit">Predict</button>
+    </form>
+  </div>
+</body>
+</html>

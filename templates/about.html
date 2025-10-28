@@ -1,6 +1,52 @@
-{% extends "base.html" %}
-{% block content %}
-<h1>❤️ About This Site</h1>
-<p>This website predicts heart disease risk using a Random Forest model built with Python and Flask.</p>
-<p>All predictions are informational only — always consult a medical professional for health decisions.</p>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About | Heart Health</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #fdfbfb, #ebedee);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .container {
+      width: 85%;
+      max-width: 800px;
+      margin: 60px auto;
+      background-color: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #dc3545;
+      margin-bottom: 20px;
+    }
+    p {
+      color: #444;
+      line-height: 1.6;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>About This Project</h1>
+    <p>
+      This website was built with the goal of promoting awareness about heart health 
+      and leveraging technology to help people assess their risk of heart disease.  
+    </p>
+    <p>
+      Using advanced Machine Learning (Random Forest Classifier), 
+      our model analyzes multiple health indicators — such as blood pressure, cholesterol, 
+      and chest pain type — to provide predictions.  
+    </p>
+    <p>
+      💡 This site was created with heart, hope, and the mission to encourage early health checkups.  
+      Always consult a medical professional for accurate diagnosis and treatment.
+    </p>
+  </div>
+</body>
+</html>
