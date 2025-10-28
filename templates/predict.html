@@ -3,169 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heart Disease Prediction</title>
+    <title>Heart Health Checker ❤️</title>
     <style>
         body {
-            font-family: "Poppins", sans-serif;
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        h1 {
-            color: #0d47a1;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff4b2b, #ff416c);
+            color: #fff;
             text-align: center;
-            margin-top: 30px;
+            margin: 0;
+            padding: 0;
+        }
+        h1, h2 {
+            margin: 20px 0;
+        }
+        section {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 25px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
         form {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            max-width: 600px;
-            width: 90%;
-            margin-top: 20px;
-        }
-        label {
-            font-weight: 600;
-            display: block;
-            margin-top: 10px;
-            color: #333;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
         }
         input, select {
-            width: 100%;
+            width: 80%;
             padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #90caf9;
             border-radius: 8px;
-            font-size: 14px;
+            border: none;
+            outline: none;
+            font-size: 15px;
         }
         button {
-            display: block;
-            width: 100%;
-            margin-top: 20px;
-            background-color: #1976d2;
-            color: white;
-            padding: 12px;
+            background-color: #fff;
+            color: #ff4b2b;
             border: none;
-            border-radius: 8px;
+            border-radius: 25px;
+            padding: 10px 25px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
+            transition: 0.3s ease;
         }
         button:hover {
-            background-color: #1565c0;
+            background-color: #ff4b2b;
+            color: white;
         }
-        .result {
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 25px;
-            color: #0d47a1;
+        footer {
+            margin-top: 40px;
+            color: #eee;
+            font-size: 14px;
         }
-        .section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 30px 0;
-            max-width: 800px;
-            width: 90%;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .section h2 {
-            color: #0d47a1;
-        }
-        .section img {
-            width: 100%;
-            border-radius: 10px;
-            margin-top: 15px;
+        .emoji {
+            font-size: 1.3em;
         }
     </style>
 </head>
 <body>
 
-    <h1>Heart Disease Prediction</h1>
+    <h1>❤️ Heart Health Prediction Portal</h1>
 
-    <form action="/predict" method="post">
-        <label>Age</label>
-        <input type="number" name="age" required>
-
-        <label>Sex (1 = Male, 0 = Female)</label>
-        <select name="sex" required>
-            <option value="1">Male</option>
-            <option value="0">Female</option>
-        </select>
-
-        <label>Chest Pain Type (0–3)</label>
-        <input type="number" name="cp" min="0" max="3" required>
-
-        <label>Resting Blood Pressure</label>
-        <input type="number" name="trestbps" required>
-
-        <label>Serum Cholesterol (mg/dl)</label>
-        <input type="number" name="chol" required>
-
-        <label>Fasting Blood Sugar > 120 mg/dl (1 = True, 0 = False)</label>
-        <select name="fbs" required>
-            <option value="1">True</option>
-            <option value="0">False</option>
-        </select>
-
-        <label>Resting ECG Results (0–2)</label>
-        <input type="number" name="restecg" min="0" max="2" required>
-
-        <label>Maximum Heart Rate Achieved</label>
-        <input type="number" name="thalach" required>
-
-        <label>Exercise Induced Angina (1 = Yes, 0 = No)</label>
-        <select name="exang" required>
-            <option value="1">Yes</option>
-            <option value="0">No</option>
-        </select>
-
-        <label>ST Depression (Oldpeak)</label>
-        <input type="number" name="oldpeak" step="0.1" required>
-
-        <label>Slope (0–2)</label>
-        <input type="number" name="slope" min="0" max="2" required>
-
-        <label>Number of Major Vessels (0–3)</label>
-        <input type="number" name="ca" min="0" max="3" required>
-
-        <label>Thalassemia (0–3)</label>
-        <input type="number" name="thal" min="0" max="3" required>
-
-        <button type="submit">Predict</button>
-    </form>
-
-    {% if prediction_text %}
-    <div class="result">{{ prediction_text }}</div>
-    {% endif %}
-
-    <div class="section">
-        <h2>About Heart Disease</h2>
+    <section id="about">
+        <h2>💡 About This Project</h2>
         <p>
-            Heart disease refers to a range of conditions that affect your heart — including 
-            blood vessel diseases, heart rhythm problems, and heart defects. 
-            It remains one of the leading causes of death worldwide. 
-            However, with early detection and lifestyle improvements, 
-            heart disease can often be prevented or managed effectively.
+            This website uses a <strong>Machine Learning model</strong> 🤖 trained on medical data to predict whether a person might have heart disease 🫀.
         </p>
-        <img src="https://cdn.pixabay.com/photo/2017/03/07/02/12/heart-2120178_1280.jpg" alt="Heart Disease Awareness">
-    </div>
-
-    <div class="section">
-        <h2>Awareness & Prevention</h2>
         <p>
-            Prevention starts with a healthy lifestyle. Eating nutritious food, exercising regularly, 
-            avoiding smoking, and managing stress are key steps in reducing the risk of heart disease. 
-            Regular health checkups and staying informed about risk factors such as cholesterol, 
-            blood pressure, and blood sugar levels play a vital role.
+            Our goal is to make early detection easier and spread awareness so that people can take charge of their health 💪.
         </p>
-        <img src="https://cdn.pixabay.com/photo/2016/03/31/19/14/heart-1291628_1280.png" alt="Healthy Heart">
-    </div>
+        <p>
+            Note: This is not a medical diagnosis tool — it’s an educational project designed to demonstrate AI’s potential in healthcare 🌍.
+        </p>
+    </section>
+
+    <section id="awareness">
+        <h2>❤️ Heart Disease Awareness</h2>
+        <p>
+            Every year, heart disease affects millions globally 🌎. But with awareness, prevention, and care, we can change that.  
+        </p>
+        <ul style="text-align: left; display: inline-block; font-size: 16px;">
+            <li>🥗 Eat more fruits and vegetables.</li>
+            <li>🚶‍♂️ Exercise for at least 30 minutes a day.</li>
+            <li>🚭 Avoid smoking and limit alcohol intake.</li>
+            <li>🧘 Manage stress with meditation or hobbies.</li>
+            <li>💤 Get proper sleep and routine checkups.</li>
+        </ul>
+        <p>
+            Remember — a strong heart builds a stronger life ❤️.
+        </p>
+    </section>
+
+    <section id="predict">
+        <h2>🧠 Predict Your Heart Health</h2>
+        <form action="/predict" method="POST">
+            <input type="number" name="age" placeholder="Enter your Age" required>
+            <select name="sex" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="1">Male ♂️</option>
+                <option value="0">Female ♀️</option>
+            </select>
+            <select name="cp" required>
+                <option value="" disabled selected>Select Chest Pain Type</option>
+                <option value="0">Typical Angina</option>
+                <option value="1">Atypical Angina</option>
+                <option value="2">Non-anginal Pain</option>
+                <option value="3">Asymptomatic</option>
+            </select>
+            <input type="number" name="trestbps" placeholder="Resting Blood Pressure (mm Hg)" required>
+            <input type="number" name="chol" placeholder="Cholesterol (mg/dl)" required>
+            <select name="fbs" required>
+                <option value="" disabled selected>Fasting Blood Sugar &gt; 120 mg/dl?</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+            <select name="restecg" required>
+                <option value="" disabled selected>Resting ECG Results</option>
+                <option value="0">Normal</option>
+                <option value="1">Abnormality</option>
+                <option value="2">Hypertrophy</option>
+            </select>
+            <input type="number" name="thalach" placeholder="Max Heart Rate Achieved" required>
+            <select name="exang" required>
+                <option value="" disabled selected>Exercise Induced Angina</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+            <input type="number" name="oldpeak" placeholder="ST Depression" required>
+            <select name="slope" required>
+                <option value="" disabled selected>Slope of ST Segment</option>
+                <option value="0">Upsloping</option>
+                <option value="1">Flat</option>
+                <option value="2">Downsloping</option>
+            </select>
+            <input type="number" name="ca" placeholder="Number of Major Vessels (0–3)" required>
+            <select name="thal" required>
+                <option value="" disabled selected>Thalassemia</option>
+                <option value="1">Normal</option>
+                <option value="2">Fixed Defect</option>
+                <option value="3">Reversible Defect</option>
+            </select>
+            <button type="submit">Predict 🩺</button>
+        </form>
+
+        {% if prediction_text %}
+            <h3 style="margin-top:20px; color:#fff;">🩶 {{ prediction_text }}</h3>
+        {% endif %}
+    </section>
+
+    <footer>
+        <p>© 2025 Heart Health AI | Stay Healthy ❤️</p>
+    </footer>
 
 </body>
 </html>
